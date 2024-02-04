@@ -1,0 +1,10 @@
+{
+    "name": "flixel-composites",
+    "license": "MIT",
+    "releasenote": "Basic composite support and examples.",
+    "url": "https://github.com/47rooks/flixel-composites",
+    "contributors": ["47rooks"],
+    "version": "0.0.1",
+    "tags": ["flixel","openfl"],
+    "description": "A composite framework for HaxeFlixel."
+}
