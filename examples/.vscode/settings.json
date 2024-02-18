@@ -1,0 +1,11 @@
+{
+	"[haxe]": {
+		"editor.formatOnSave": true,
+		"editor.formatOnSaveMode": "modifications",
+        "editor.codeActionsOnSave": {
+			"source.sortImports": "explicit"
+		}
+	},
+	"cmake.configureOnOpen": false,
+	"haxe.executable": "auto"
+}

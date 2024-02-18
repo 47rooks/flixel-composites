@@ -5,7 +5,7 @@
 
   <!-- _________________________ Application Settings _________________________ -->
 
-  <app title="CompositeExamples" file="CompositeExamples" main="examples.Main" version="0.0.1"
+  <app title="CompositeExamples" file="CompositeExamples" main="Main" version="0.0.1"
     company="Rookery Games" />
 
   <!--The
@@ -37,13 +37,14 @@
 
   <!-- _____________________________ Path Settings ____________________________ -->
 
-  <set name="BUILD_DIR" value="export" include="examples" />
+  <set name="BUILD_DIR" value="export" />
   <source path="src" />
   <assets path="assets" />
 
   <!-- _______________________________ Libraries ______________________________ -->
 
   <haxelib name="flixel" />
+  <haxelib name="flixel-composites" />
 
   <!-- ______________________________ Haxedefines _____________________________ -->
 

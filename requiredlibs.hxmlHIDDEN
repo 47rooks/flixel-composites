@@ -1,0 +1,5 @@
+-lib flixel:5.6.0
+-lib openfl:9.3.2
+-lib lime:8.1.1
+-lib utest
+-lib test-adapter

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://lime.software/project/1.0.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
+
+    <meta title="FlixelCompositesUnitTests" version="1.0.0" />
+    <app file="TestMain" main="TestMain" />
+
+    <set name="SWF_VERSION" value="11.8" />
+    <set name="BUILD_DIR" value="export" />
+
+    <source path="src" include="src/unit" />       <!-- Test code hierarchy -->
+
+    <haxelib name="flixel" />
+    <haxelib name="flixel-composites" />
+    <haxelib name="utest" />
+</project>

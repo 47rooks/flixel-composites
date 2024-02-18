@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "path": "composites"
+    },
+    {
+      "path": "examples"
+    },
+    {
+      "path": "tests"
+    }
+  ],
+  "settings": {
+    "lime.projectFile": "..\\examples\\Project.xml",
+  }
+}
