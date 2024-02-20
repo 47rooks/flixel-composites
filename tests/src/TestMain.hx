@@ -1,6 +1,7 @@
 package;
 
 import flixel.composites.CompositeObjectTest;
+import flixel.composites.CompositeSpriteTest;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import utest.Runner;
@@ -49,6 +50,7 @@ class TestMain extends Sprite
 	{
 		_runner = new Runner();
         _runner.addCase(new CompositeObjectTest());
+		_runner.addCase(new CompositeSpriteTest());
 
 		// Remove setup event handler and add one to run the tests
 		// on the game loop.

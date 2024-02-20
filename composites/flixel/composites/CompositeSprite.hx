@@ -10,7 +10,6 @@ import flixel.util.FlxDestroyUtil;
 typedef SpriteMemberData =
 {
 	var clazz:Class<FlxBasic>;
-	var relativeOrigin:FlxPoint;
 }
 
 /**
@@ -77,7 +76,6 @@ class CompositeSprite extends FlxSprite implements IComposite
 		if (member is FlxSprite)
 		{
 			var m = cast(member, FlxSprite);
-			m.origin = data.relativeOrigin;
 		}
 	}
 	
@@ -98,7 +96,7 @@ class CompositeSprite extends FlxSprite implements IComposite
 			if (m.exists && m.active && m is FlxSprite)
 			{
 				var s = cast(m, FlxSprite);
-				_memberData[i].relativeOrigin = new FlxPoint(x + origin.x - s.x, y + origin.y - s.y);
+				s.origin = new FlxPoint(x + new_origin.x - s.x, y + new_origin.y - s.y);
 			}
 		}
 	}
@@ -112,7 +110,6 @@ class CompositeSprite extends FlxSprite implements IComposite
 			{
 				var s = cast(m, FlxSprite);
 				s.scale = new_scale;
-				// _memberData[i].relativeScale = new FlxPoint(x + origin.x - s.x, y + origin.y - s.y);
 			}
 		}
 	}
@@ -360,13 +357,11 @@ class CompositeSprite extends FlxSprite implements IComposite
 		{
 			var m = cast(member, FlxSprite);
 			return {
-				clazz: FlxSprite,
-				relativeOrigin: new FlxPoint(m.width / 2.0, m.height / 2.0)
+				clazz: FlxSprite
 			};
 		}
 		return {
-			clazz: FlxBasic,
-			relativeOrigin: new FlxPoint(0, 0)
+			clazz: FlxBasic
 		};
 	}
 	

@@ -92,4 +92,25 @@ class CompositeObjectTest extends Test
 		Assert.equals(55, cast(_testCo._members[2], FlxObject).x);
 		Assert.equals(45, cast(_testCo._members[2], FlxObject).y);
 	}
+	function testMove():Void
+	{
+		_testCo.setPosition(_testCo.x + 10, _testCo.y + 10);
+		_testCo.update(0.016);
+		
+		Assert.equals(25, cast(_testCo._members[1], FlxObject).x);
+		Assert.equals(225, cast(_testCo._members[1], FlxObject).y);
+	}
+	
+	function testRotate():Void
+	{
+		_testCo.angle = 45;
+		_testCo.update(0.016);
+		
+		Assert.equals(45, cast(_testCo._members[1], FlxObject).angle);
+		
+		_testCo.angle += 14;
+		_testCo.update(0.016);
+		
+		Assert.equals(59, cast(_testCo._members[1], FlxObject).angle);
+	}
 }

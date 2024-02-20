@@ -11,6 +11,6 @@
     }
   ],
   "settings": {
-    "lime.projectFile": "..\\examples\\Project.xml",
+    "lime.projectFile": "..\\tests\\Project.xml",
   }
 }
