@@ -2,14 +2,13 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxState;
 import flixel.composites.CompositeSprite;
 import flixel.util.FlxColor;
 
 /**
  * This state provides the framework to run all the composite examples.
  */
-class PlayState extends FlxState
+class PlayState extends BaseState
 {
 	var _testCo:CompositeSprite;
 	

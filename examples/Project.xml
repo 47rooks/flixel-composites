@@ -24,7 +24,7 @@
     window settings apply to all targets-->
   <!-- <window width="640" height="480" fps="60" background="#000000" hardware="true"
     vsync="false" /> -->
-  <window width="1900" height="480" fps="60" background="#000000" hardware="true" vsync="false" />
+  <window width="960" height="480" fps="60" background="#000000" hardware="true" vsync="false" />
 
   <!--HTML5-specific-->
   <window if="html5" resizable="false" />
@@ -45,6 +45,7 @@
 
   <haxelib name="flixel" />
   <haxelib name="flixel-composites" />
+  <haxelib name="flixel-ui" />
 
   <!-- ______________________________ Haxedefines _____________________________ -->
 
