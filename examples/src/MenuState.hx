@@ -14,7 +14,7 @@ import flixel.util.FlxColor;
 class MenuState extends FlxState
 {
 	static final LEFT_X = 10;
-	static final TOP_Y = 100;
+	static final TOP_Y = 10;
 	static final LINE_Y = 60;
 	static final TITLE_Y = 80;
 	static final DESC_X = 220;
@@ -46,7 +46,7 @@ class MenuState extends FlxState
 		addMenuItem(0, "Simple movement", () ->
 		{
 			FlxG.switchState(PlayState.new);
-		}, "WASD movement, SHIFT-A/D rotation, CTRL-UP/DOWN scale");
+		}, "WASD movement, SHIFT-A/D rotation, CTRL-UP/DOWN/1 scale");
 		
 		_column_y_value[0] += LINE_Y;
 		

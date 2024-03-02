@@ -50,8 +50,10 @@ class CompositeSpriteTest extends Test
 		_testCs.origin.set(_o.width / 2.0, _o.height / 2.0);
 		
 		var s = cast(_testCs._compositeObject._members[2], FlxSprite);
-		Assert.equals(-45, s.origin.x);
-		Assert.equals(-15, s.origin.y);
+		_testCs.update(0.016);
+		
+		Assert.equals(-50, s.origin.x);
+		Assert.equals(-30, s.origin.y);
 	}
 	
 	function testScaleCallback():Void
@@ -59,7 +61,10 @@ class CompositeSpriteTest extends Test
 		_testCs.scale.set(2.0, 2.0);
 		
 		var s = cast(_testCs._compositeObject._members[2], FlxSprite);
+		_testCs.update(0.016);
+
 		Assert.equals(2.0, s.scale.x);
 		Assert.equals(2.0, s.scale.y);
 	}
+	// FIXME - add hitbox update tests
 }

@@ -44,11 +44,6 @@ class CompositeSprite extends FlxSprite implements IComposite
 		super(x, y);
 		_compositeObject = new CompositeObject(x, y);
 		_memberData = new Array<SpriteMemberData>();
-		
-		origin = new FlxCallbackPoint(originCallback);
-		scale = new FlxCallbackPoint(scaleCallback);
-		
-		scale.set(1.0, 1.0);
 	}
 	
 	override public function update(elapsed:Float):Void
@@ -64,9 +59,8 @@ class CompositeSprite extends FlxSprite implements IComposite
 		{
 			if (m.exists && m.active && m is FlxSprite)
 			{
-				_updateMember(m, _memberData[i]);
-				
 				m.update(elapsed);
+				_updateMember(m, _memberData[i]);
 			}
 		};
 	}
@@ -76,6 +70,8 @@ class CompositeSprite extends FlxSprite implements IComposite
 		if (member is FlxSprite)
 		{
 			var m = cast(member, FlxSprite);
+			m.origin = new FlxPoint(x + origin.x - m.x, y + origin.y - m.y);
+			m.scale = scale;
 		}
 	}
 	
@@ -86,32 +82,6 @@ class CompositeSprite extends FlxSprite implements IComposite
 		// sprite data. But it is to have no visualization itself.
 		
 		_compositeObject.draw();
-	}
-	
-	function originCallback(new_origin:FlxPoint):Void
-	{
-		// This will duplicate updates for FlxSprite members
-		for (i => m in _compositeObject._members)
-		{
-			if (m.exists && m.active && m is FlxSprite)
-			{
-				var s = cast(m, FlxSprite);
-				s.origin = new FlxPoint(x + new_origin.x - s.x, y + new_origin.y - s.y);
-			}
-		}
-	}
-	
-	function scaleCallback(new_scale:FlxPoint):Void
-	{
-		// This will duplicate updates for FlxSprite members
-		for (i => m in _compositeObject._members)
-		{
-			if (m.exists && m.active && m is FlxSprite)
-			{
-				var s = cast(m, FlxSprite);
-				s.scale = new_scale;
-			}
-		}
 	}
 	
 	// ---- Overrides for the FlxBasic behaviours
@@ -134,9 +104,6 @@ class CompositeSprite extends FlxSprite implements IComposite
 	 */
 	override public function destroy():Void
 	{
-		origin = FlxDestroyUtil.destroy(origin);
-		scale = FlxDestroyUtil.destroy(scale);
-		
 		super.destroy();
 	}
 	
@@ -338,6 +305,35 @@ class CompositeSprite extends FlxSprite implements IComposite
 			_compositeObject.angle = Value;
 		}
 		return ret;
+	}
+	
+	// FIXME not used or tested yet. This is the next thing
+	override public function updateHitbox():Void
+	{
+		var minX = x;
+		var minY = y;
+		var maxX = x + width;
+		var maxY = y + height;
+		
+		for (m in _compositeObject._members)
+		{
+			if (m is FlxObject)
+			{
+				var o = cast(m, FlxObject);
+				if (x + o.x < minX)
+					minX = x + o.x;
+				if (x + o.x + o.width > maxX)
+					maxX = x + o.x + o.width;
+				if (y + o.y < minY)
+					minY = y + o.y;
+				if (y + o.y + o.height > maxY)
+					maxY = y + o.y + o.height;
+			}
+		}
+		width = maxX - minX;
+		height = maxY - minY;
+		trace('minX=${minX}, minY=${minY}, maxX=${maxX}, maxY=${maxY}');
+		trace('width=${width}, height=${height}');
 	}
 	
 	// ---- End of FlxSprite overrides ----

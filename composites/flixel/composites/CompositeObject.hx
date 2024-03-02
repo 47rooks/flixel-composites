@@ -63,9 +63,8 @@ class CompositeObject extends FlxObject implements IComposite
 		{
 			if (m.exists && m.active)
 			{
-				_updateMember(m, _memberData[i]);
-				
 				m.update(elapsed);
+				_updateMember(m, _memberData[i]);
 			}
 		};
 	}

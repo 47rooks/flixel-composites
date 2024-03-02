@@ -3,10 +3,11 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.composites.CompositeSprite;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
 
 /**
- * This state provides the framework to run all the composite examples.
+ * This state provides a basic example of composite movements.
  */
 class PlayState extends BaseState
 {
@@ -18,6 +19,7 @@ class PlayState extends BaseState
 		
 		_testCo = _createComposite();
 		add(_testCo);
+		_createHelp();
 	}
 	
 	function _createComposite():CompositeSprite
@@ -36,11 +38,19 @@ class PlayState extends BaseState
 		co.add(small);
 		co.add(small2);
 		
-		co.origin.set(big.width / 2.0, big.height / 2.0);
+		co.origin.set(big.x + big.width / 2.0, big.y + big.height / 2.0);
+		co.updateHitbox();
 		
 		return co;
 	}
 	
+	function _createHelp():Void
+	{
+		var help = new FlxText(10, FlxG.height - 30, "WASD - movement. SHIFT-A/D - rotate CCW, CW. CTRL-UP/DOWN/1 - scale up/down - 1 resets to 1.0 scale.",
+			20);
+		add(help);
+	}
+
 	override public function update(elapsed:Float):Void
 	{
 		if (FlxG.keys.pressed.SHIFT)

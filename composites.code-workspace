@@ -8,9 +8,18 @@
     },
     {
       "path": "tests"
-    }
+    },
+	{
+	  "path": ".",
+	  "name": "Composites MR Project"
+	}
   ],
   "settings": {
     "lime.projectFile": "..\\examples\\Project.xml",
+    "files.exclude": {
+      "composites": true,
+      "examples": true,
+      "tests": true
+    }
   }
 }
