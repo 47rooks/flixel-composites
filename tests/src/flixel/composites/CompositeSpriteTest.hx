@@ -24,9 +24,9 @@ class CompositeSpriteTest extends Test
 	{
 		_testCs = new CompositeSprite(5, 15);
 		_b = new FlxBasic();
-		_o = new FlxObject(10, 200);
+		_o = new FlxObject(10, 200, 50, 100);
 		_s = new FlxSprite(50, 30);
-		
+
 		_testCs.add(_b);
 		_testCs.add(_o);
 		_testCs.add(_s);
@@ -52,8 +52,8 @@ class CompositeSpriteTest extends Test
 		var s = cast(_testCs._compositeObject._members[2], FlxSprite);
 		_testCs.update(0.016);
 		
-		Assert.equals(-50, s.origin.x);
-		Assert.equals(-30, s.origin.y);
+		Assert.equals(-25, s.origin.x);
+		Assert.equals(20, s.origin.y);
 	}
 	
 	function testScaleCallback():Void
@@ -66,5 +66,38 @@ class CompositeSpriteTest extends Test
 		Assert.equals(2.0, s.scale.x);
 		Assert.equals(2.0, s.scale.y);
 	}
-	// FIXME - add hitbox update tests
+	function testUpdateHitboxLR():Void
+	{
+		_testCs.updateHitbox();
+		
+		Assert.equals(60, _testCs.width);
+		Assert.equals(300, _testCs.height);
+	}
+	
+	function testUpdateHitboxUL():Void
+	{
+		_testCs.add(new FlxObject(-100, -50, 45, 20));
+		_testCs.updateHitbox();
+		
+		Assert.equals(160, _testCs.width);
+		Assert.equals(350, _testCs.height);
+	}
+	
+	function testUpdateHitboxLL():Void
+	{
+		_testCs.add(new FlxObject(-100, 350, 45, 20));
+		_testCs.updateHitbox();
+		
+		Assert.equals(160, _testCs.width);
+		Assert.equals(370, _testCs.height);
+	}
+	
+	function testUpdateHitboxUR():Void
+	{
+		_testCs.add(new FlxObject(100, -50, 45, 20));
+		_testCs.updateHitbox();
+		
+		Assert.equals(145, _testCs.width);
+		Assert.equals(350, _testCs.height);
+	}
 }

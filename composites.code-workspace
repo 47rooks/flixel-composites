@@ -1,21 +1,21 @@
 {
   "folders": [
     {
-      "path": "composites"
+      "path": "tests"
     },
     {
       "path": "examples"
     },
     {
-      "path": "tests"
+      "path": "composites"
     },
-	{
-	  "path": ".",
-	  "name": "Composites MR Project"
-	}
+    {
+      "path": ".",
+      "name": "Composites MR Project"
+    }
   ],
   "settings": {
-    "lime.projectFile": "..\\examples\\Project.xml",
+    "lime.projectFile": "..\\tests\\Project.xml",
     "files.exclude": {
       "composites": true,
       "examples": true,
