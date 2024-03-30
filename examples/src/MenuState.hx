@@ -55,6 +55,13 @@ class MenuState extends FlxState
 			FlxG.switchState(PathFollowingState.new);
 		}, "Path following examples");
 		
+		_column_y_value[0] += LINE_Y;
+		
+		addMenuItem(0, "Collisions", () ->
+		{
+			FlxG.switchState(CollisionsState.new);
+		}, "Collision examples");
+		
 		#if desktop
 		_column_y_value[0] += 2 * LINE_Y;
 		

@@ -15,7 +15,7 @@
     }
   ],
   "settings": {
-    "lime.projectFile": "..\\tests\\Project.xml",
+    "lime.projectFile": "..\\examples\\Project.xml",
     "files.exclude": {
       "composites": true,
       "examples": true,

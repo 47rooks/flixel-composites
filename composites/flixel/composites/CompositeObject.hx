@@ -129,4 +129,9 @@ class CompositeObject extends FlxObject implements IComposite
 	}
 	
 	public function remove(?member:FlxBasic, ?name:String) {}
+	
+	public function getSingleCollider():FlxObject
+	{
+		return null;
+	}
 }

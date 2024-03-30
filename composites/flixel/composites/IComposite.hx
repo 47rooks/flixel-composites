@@ -24,4 +24,13 @@ interface IComposite
 	 * @param name the name of the member
 	 */
 	public function remove(member:Null<FlxBasic> = null, name:Null<String> = null):Void;
+	
+	/**
+	 * Get this composite's collider hitbox object. This may be used in
+	 * any standard collision group or function. This will collide as though
+	 * the entire composite was just one entity.
+	 * 
+	 * @return FlxObject the collider object
+	 */
+	public function getSingleCollider():FlxObject;
 }

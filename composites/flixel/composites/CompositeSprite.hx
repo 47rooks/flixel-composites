@@ -5,7 +5,9 @@ import flixel.FlxSprite;
 import flixel.composites.CompositeObject;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
 import flixel.util.FlxDestroyUtil;
+import flixel.util.FlxDirectionFlags;
 
 typedef SpriteMemberData =
 {
@@ -39,15 +41,28 @@ class CompositeSprite extends FlxSprite implements IComposite
 	var _compositeObject:CompositeObject;
 	var _memberData:Array<SpriteMemberData>; // member data for FlxSprite types
 	
+	// Previous scale values - stored after application of new scale
+	var _previousScaleX:Float = 1.0;
+	var _previousScaleY:Float = 1.0;
+	
+	var _hitbox:SingleCollider;
+	
+	public final HITBOX = '__hitbox__';
+	
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
 		_compositeObject = new CompositeObject(x, y);
 		_memberData = new Array<SpriteMemberData>();
+		_hitbox = new SingleCollider(this, 0.0, 0.0);
+		_hitbox.elasticity = 1.0;
+		add(_hitbox, HITBOX);
 	}
 	
 	override public function update(elapsed:Float):Void
 	{
+		if (_hitbox.touching != FlxDirectionFlags.NONE)
+			processCollision();
 		// Update Composite itself first then update the members
 		// using the new values of the composite.
 		super.update(elapsed);
@@ -63,6 +78,8 @@ class CompositeSprite extends FlxSprite implements IComposite
 				_updateMember(m, _memberData[i]);
 			}
 		};
+		_hitbox.x += (x - last.x);
+		_hitbox.y += (y - last.y);
 	}
 	
 	function _updateMember(member:FlxBasic, data:SpriteMemberData):Void
@@ -72,7 +89,24 @@ class CompositeSprite extends FlxSprite implements IComposite
 			var m = cast(member, FlxSprite);
 			m.origin = new FlxPoint(x + origin.x - m.x, y + origin.y - m.y);
 			m.scale = scale;
+			m.offset.set(offset.x, offset.y);
 		}
+	}
+	
+	/**
+	 * Process any collision experienced by the hitbox. This is 
+	 * detected by there being any difference between the relative position
+	 * of the hitbox and the actual distance between the hitbox from
+	 * the Composite. Any discrepancy is due to collision.
+	 * 
+	 * We could check the collision but there is no real need.
+	 */
+	function processCollision():Void
+	{
+		x -= Math.round((x + _compositeObject._memberData[0].relativeX - _hitbox.x));
+		y -= Math.round((y + _compositeObject._memberData[0].relativeY - _hitbox.y));
+		velocity.add(_hitbox.velocity.x, _hitbox.velocity.y);
+		_hitbox.velocity.set();
 	}
 	
 	override public function draw():Void
@@ -80,7 +114,13 @@ class CompositeSprite extends FlxSprite implements IComposite
 		// Do not call super.draw() as this FlxSprite is a container object
 		// to implement the FlxSprite interface and store composite-level
 		// sprite data. But it is to have no visualization itself.
-		
+		#if FLX_DEBUG
+		if (FlxG.debugger.drawDebug)
+		{
+			drawDebug();
+			_hitbox.drawDebug();
+		}
+		#end
 		_compositeObject.draw();
 	}
 	
@@ -310,30 +350,61 @@ class CompositeSprite extends FlxSprite implements IComposite
 	// FIXME not used or tested yet. This is the next thing
 	override public function updateHitbox():Void
 	{
-		var minX = x;
-		var minY = y;
-		var maxX = x + width;
-		var maxY = y + height;
+		var minX = 999999.0;
+		var minY = 999999.0;
+		var maxX = 0.0;
+		var maxY = 0.0;
 		
-		for (m in _compositeObject._members)
+		var maxX_unscaled = 0.0;
+		var maxY_unscaled = 0.0;
+		
+		for (i => m in _compositeObject._members)
 		{
+			if (i == 0)
+				continue;
 			if (m is FlxObject)
 			{
 				var o = cast(m, FlxObject);
-				if (x + o.x < minX)
-					minX = x + o.x;
-				if (x + o.x + o.width > maxX)
-					maxX = x + o.x + o.width;
-				if (y + o.y < minY)
-					minY = y + o.y;
-				if (y + o.y + o.height > maxY)
-					maxY = y + o.y + o.height;
+				
+				var dx = _compositeObject._memberData[i].relativeX;
+				var dy = _compositeObject._memberData[i].relativeY;
+				
+				dx = dx * scale.x;
+				dy = dy * scale.y;
+				
+				if (x + dx < minX)
+					minX = x + dx;
+				if (x + dx + o.width * scale.x > maxX)
+				{
+					maxX = x + dx + o.width * scale.x;
+					maxX_unscaled = x + dx + o.width;
+				}
+				if (y + dy < minY)
+					minY = y + dy;
+				if (y + dy + o.height * scale.y > maxY)
+				{
+					maxY = y + dy + o.height * scale.y;
+					maxY_unscaled = y + dy + o.height;
+				}
 			}
 		}
+		
 		width = maxX - minX;
 		height = maxY - minY;
 		trace('minX=${minX}, minY=${minY}, maxX=${maxX}, maxY=${maxY}');
 		trace('width=${width}, height=${height}');
+		// Adjust position of the hitbox
+		offset.set(-0.5 * (width - (maxX_unscaled - minX)), -0.5 * (height - (maxY_unscaled - minY)));
+		
+		// Set up hitbox based on the rotated bounds. This will always be bigger than
+		// or equal to the sprite image size.
+		var bnds = FlxRect.get().set(x, y, width, height).getRotatedBounds(angle, origin);
+		
+		// Set the hitbox based on the scaled width and height
+		_compositeObject._memberData[0].relativeX = 0.5 * (bnds.x - x);
+		_compositeObject._memberData[0].relativeY = 0.5 * (bnds.y - y);
+		
+		_hitbox.setSize(width, height);
 	}
 	
 	// ---- End of FlxSprite overrides ----
@@ -356,10 +427,21 @@ class CompositeSprite extends FlxSprite implements IComposite
 				clazz: FlxSprite
 			};
 		}
+		else if (member is FlxObject)
+		{
+			return {
+				clazz: FlxObject
+			};
+		}
 		return {
 			clazz: FlxBasic
 		};
 	}
 	
 	public function remove(?member:FlxBasic, ?name:String) {}
+	
+	public function getSingleCollider():FlxObject
+	{
+		return _hitbox;
+	}
 }
