@@ -373,14 +373,18 @@ class CompositeSprite extends FlxSprite implements IComposite
 				dy = dy * scale.y;
 				
 				if (x + dx < minX)
+				{
 					minX = x + dx;
+				}
 				if (x + dx + o.width * scale.x > maxX)
 				{
 					maxX = x + dx + o.width * scale.x;
 					maxX_unscaled = x + dx + o.width;
 				}
 				if (y + dy < minY)
+				{
 					minY = y + dy;
+				}
 				if (y + dy + o.height * scale.y > maxY)
 				{
 					maxY = y + dy + o.height * scale.y;
@@ -391,20 +395,20 @@ class CompositeSprite extends FlxSprite implements IComposite
 		
 		width = maxX - minX;
 		height = maxY - minY;
-		trace('minX=${minX}, minY=${minY}, maxX=${maxX}, maxY=${maxY}');
-		trace('width=${width}, height=${height}');
+		
 		// Adjust position of the hitbox
-		offset.set(-0.5 * (width - (maxX_unscaled - minX)), -0.5 * (height - (maxY_unscaled - minY)));
 		
 		// Set up hitbox based on the rotated bounds. This will always be bigger than
 		// or equal to the sprite image size.
-		var bnds = FlxRect.get().set(x, y, width, height).getRotatedBounds(angle, origin);
+		var o2 = new FlxPoint().copyFrom(origin);
+		o2.subtract(minX - x, minY - y);
+		var bnds = FlxRect.get().set(minX, minY, width, height).getRotatedBounds(angle, o2);
 		
 		// Set the hitbox based on the scaled width and height
-		_compositeObject._memberData[0].relativeX = 0.5 * (bnds.x - x);
-		_compositeObject._memberData[0].relativeY = 0.5 * (bnds.y - y);
+		_compositeObject._memberData[0].relativeX = (bnds.x - x);
+		_compositeObject._memberData[0].relativeY = (bnds.y - y);
 		
-		_hitbox.setSize(width, height);
+		_hitbox.setSize(bnds.width, bnds.height);
 	}
 	
 	// ---- End of FlxSprite overrides ----

@@ -8,6 +8,5 @@ class SingleCollider extends FlxObject
 	{
 		super(x, y, width, height);
 		_object = object;
-		trace('construction:object=${object}');
 	}
 }

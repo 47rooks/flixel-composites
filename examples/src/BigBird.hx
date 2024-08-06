@@ -24,16 +24,18 @@ class BigBird extends CompositeSprite
 		leftFlare.loadGraphic('assets/bigFlare.png');
 		var rightFlare = new FlxSprite(32, 128);
 		rightFlare.loadGraphic('assets/bigFlare.png');
+		var noseFlare = new FlxSprite(-80, -80);
+		noseFlare.loadGraphic('assets/bigFlare.png');
 		
 		// Set center
 		bird.updateHitbox();
 		var mp = bird.getMidpoint();
 		origin = FlxPoint.get(mp.x - bird.x, mp.y - bird.y);
-		trace('origin=${origin}');
 		
 		add(bird);
 		add(leftFlare);
 		add(rightFlare);
+		add(noseFlare);
 	}
 	
 	public function updateSpeed(deltaVel:FlxPoint):Void
